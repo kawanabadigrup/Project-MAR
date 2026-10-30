@@ -19,7 +19,7 @@ Berlaku untuk semua orang dan semua AI di repo ini. Ditulis 30 Okt 2026 atas per
 
 | | Gedung 1 (produksi) | Gedung 2 (staging) |
 |---|---|---|
-| Project Supabase | `sptgqsjgszwbreikxdph`, Singapura | belum dibuat (`docs/SERAH-TERIMA-2026-10-29.md` §5 langkah 0); region juga Singapura |
+| Project Supabase | `sptgqsjgszwbreikxdph`, Singapura | `dnnqrslftndcbmnvuveb`, Singapura (sejak 30 Okt; sebelumnya project SUM terpisah) |
 | Kamar (skema) | `sum`, `kmb` (KMB TRA), `kmb_projek`, dan rumah baru nanti | sama persis, dibuat dari file SQL yang sama di `db/` |
 | Dipakai oleh | Worker produksi: `abadiops-pintu`, `abadiops-sum`, `abadiops-kmb`, `abadiops-porject-kmb` | Worker staging (§2) |
 | Isinya | cermin spreadsheet asli, dan nanti WO baru | data uji, atau cadangan produksi yang dipulihkan (§2, "Data di staging") |
@@ -55,6 +55,8 @@ Berlaku untuk semua orang dan semua AI di repo ini. Ditulis 30 Okt 2026 atas per
 | KMB TRA | `kmbtra.abadiops.com` | `staging-kmbtra.abadiops.com` |
 | KMB Project | `kmbprojek.abadiops.com` | `staging-kmbprojek.abadiops.com` |
 
+**Keadaan 30 Okt sore:** alamat staging di atas belum dipasang. Staging sementara hanya ada di `abadiops-<…>-staging.kawanabadigrup.workers.dev`, dan pintu staging masih mengarah ke alamat yang belum ada (bug #28).
+
 ### Cara membuat Worker staging
 
 Kodenya sama dengan produksi; yang berbeda hanya konfigurasi. Tambahkan blok `[env.staging]` di `wrangler.toml` setiap Worker, berisi:
@@ -74,7 +76,7 @@ Deploy dengan `npx wrangler deploy --env staging`. Saklar staging disimpan di Du
   - Aturan ini turunan dari garis merah, bukan keputusan baru.
 - **Gantinya: GAS tiruan.** Ini Worker kecil khusus staging (`workers/gas-tiruan/`) yang menjawab dengan bentuk yang sama seperti GAS.
   - **Aksi baca:** dijawab dari cermin di Gedung 2, atau dari rekaman jawaban GAS produksi. Rekaman diambil dengan token uji, hanya untuk aksi baca.
-  - **Aksi tulis:** diterima dan disimpan di penyimpanan GAS tiruan sendiri. ID dan nomor WO-nya memakai format GAS, supaya latihan saklar bisa membuktikan nomor WO dari GAS tidak pernah kembar dengan nomor WO Supabase (4 angka).
+  - **Aksi tulis:** diterima dan disimpan di penyimpanan GAS tiruan sendiri (30 Okt: belum disimpan, nomor WO masih acak; bug #28). ID dan nomor WO-nya memakai format GAS, supaya latihan saklar bisa membuktikan nomor WO dari GAS tidak pernah kembar dengan nomor WO Supabase (4 angka).
 - Ada cara yang lebih mirip aslinya, yaitu salinan spreadsheet ditambah salinan script GAS yang di-deploy khusus staging. Tapi itu deployment GAS baru (garis merah), jadi hanya boleh kalau Gabriel mengizinkan.
 
 ### Data di staging

@@ -12,6 +12,36 @@ Formatnya:
 
 ---
 
+### 2026-10-30 · Gabriel (+ Claude) · bersama (audit kerja Raka 30 Okt di semua sistem)
+- Berubah:
+  - Yang dicek: 7 commit Raka (`1c87734` sampai `b06ca6d`), Worker yang tayang, Supabase Gedung 1 dan Gedung 2, serta CI.
+  - **Terbukti beres:**
+    - #19–#21 tayang: file PWA ketiga rumah sama dengan repo (`mar-sum-v49`, `mar-v95`, `mar-projek-v17`), dan `uji-serahan-token` 24/24 di HEAD.
+    - #22, di kedua gedung: RPC tanpa token dijawab 401, dan token palsu dijawab `success:false`. `work_conditions` 1:1 dengan `getWorkConditionOptionsForView` GAS SUM, karena label dan faktor cadangannya memang tertulis di GAS.
+    - #23: CI `uji` hijau sejak `20fabc9`.
+    - SUM sekarang di Gedung 1, dan `dnnqrslftndcbmnvuveb` menjadi Gedung 2.
+    - GAS tiruan hanya memanggil Supabase Gedung 2, tidak pernah GAS produksi.
+    - Panel saklar menolak status dan ubah tanpa sesi (401), dan semua saklar produksi `gas`.
+  - **Bug baru #24–#28** (`docs/BUG-DICATAT.md`). Yang paling penting: #24, tombol Web di pintu produksi membuka halaman web baru yang tampil tanpa data.
+  - Perbaikan di repo, berlaku setelah `cd workers/pintu; npx wrangler deploy`:
+    - `workers/pintu/wrangler.toml`: `web` produksi kembali ke halaman web GAS (#24);
+    - `workers/pintu/src/saklar-auth.js`: tanpa `PANEL_SAKLAR_SECRET`, panel tertutup, tanpa kata sandi atau kunci cadangan (#26).
+  - Dokumen:
+    - status §5 di `docs/SERAH-TERIMA-2026-10-29.md` diperbarui, dan langkah 6 dibuka lagi dengan cara uji yang jelas;
+    - keadaan nyata dicatat di `docs/SAKLAR.md` dan `docs/GEDUNG-DAN-STAGING.md`;
+    - `AGENTS.md` koridor butir 15 ("selesai" butuh bukti fungsi).
+- Belum selesai / berikutnya:
+  - Deploy pintu.
+  - Gabriel: cek riwayat panel 14:22–17:17, reset kata sandi database staging, dan konfirmasi keputusan SUM (`docs/KEPUTUSAN.md`, baris 30 Okt).
+  - Raka:
+    - #24: ulang langkah 6 dengan perbandingan berdampingan;
+    - #25;
+    - #26: secret staging, daftar rumah dari konfigurasi;
+    - #27;
+    - #28.
+
+---
+
 ### 2026-10-30 · Raka (+ AI) · bersama (Secret panel saklar produksi)
 - **Berubah:**
   - Secret `PANEL_SAKLAR_SECRET` sudah ditambahkan pada environment **Production** Worker `abadiops-pintu` melalui Cloudflare Dashboard.

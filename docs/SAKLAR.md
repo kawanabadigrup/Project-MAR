@@ -92,9 +92,7 @@ Saklar dioperasikan dari **satu panel visual di domain pintu**. Kode rumah sekar
 - Panel visual aktif di rute `/saklar` pada Worker Pintu (`abadiops.com/saklar` dan `abadiops-pintu-staging.kawanabadigrup.workers.dev/saklar`).
 - Pintu menulis lewat antarmuka panel, Worker rumah membaca secara dinamis via `/api/saklar/status` (dengan in-memory cache 5 detik dan fallback aman ke `gas`). Perubahan saklar tidak memerlukan deploy worker sama sekali.
 - Setiap perubahan dicatat otomatis hingga 50 riwayat terakhir di Durable Object (siapa, kapan WIB, dari → ke, alasan), lalu disalin ke tabel "Catatan pembalikan" di bawah saat terjadi pembalikan produksi.
-
-
-
+- **Keadaan 30 Okt sore (audit):** Worker rumah baru membaca saklar di `/api/sehat`. Jalur API belum mengikutinya, jadi membalik saklar belum memindahkan apa pun (bug #27). Tanpa secret, panel tertutup (bug #26).
 
 ## Target selesai migrasi (keputusan Gabriel, 29 Okt 2026)
 

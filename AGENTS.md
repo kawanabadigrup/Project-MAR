@@ -87,6 +87,13 @@ Cara kerja yang terbukti 28–29 Okt 2026. Ikuti seperti aturan, bukan saran.
     - Project kedua adalah staging. Project ketiga berarti pembayaran (titik henti).
     - Hal berisiko (saklar, aksi tulis Supabase, pemulihan cadangan, migrasi yang mengubah atau menghapus, antrean kiriman) dilatih di staging dulu.
     - Staging **tidak pernah** menyentuh GAS produksi; ia memakai GAS tiruan.
+15. **"Selesai" butuh bukti fungsi, bukan bukti tayang.**
+    - HTTP 200, HTML valid, label di `/api/sehat`, atau "deploy berhasil" belum membuktikan apa pun.
+    - Halaman web: isi dan tombolnya dibandingkan dengan GAS memakai token yang sama.
+    - Saklar: jalur API benar-benar berpindah.
+    - Salinan 1:1: dicek byte demi byte dengan sumber yang benar (`clasp clone` rumah itu sendiri).
+    - Jangan mengarahkan pengguna produksi ke fitur baru sebelum bukti itu ada.
+    - Pelajaran 30 Okt: bug #24–#27.
 
 ---
 

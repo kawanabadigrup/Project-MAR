@@ -17,7 +17,9 @@ export async function verifikasiKataSandi(password, env, clientIp) {
     };
   }
 
-  const expectedSecret = env.PANEL_SAKLAR_SECRET || 'abadiops2026!';
+  // Tanpa secret panel tertutup. Kata sandi cadangan di repo publik sama dengan tanpa kata sandi (bug #26).
+  const expectedSecret = env.PANEL_SAKLAR_SECRET;
+  if (!expectedSecret) return { ok: false, error: 'Panel belum dipasangi kata sandi (secret PANEL_SAKLAR_SECRET).' };
   let valid = false;
 
   // Jika secret adalah SHA-256 hex string (64 char)
@@ -67,8 +69,8 @@ async function hitungSha256(str) {
 }
 
 async function dapatkanKunciHmac(env) {
-  const secretKeyStr = env.PANEL_SAKLAR_SECRET || 'abadi-saklar-hmac-key-2026-fallback';
-  const enc = new TextEncoder().encode(secretKeyStr);
+  if (!env.PANEL_SAKLAR_SECRET) throw new Error('PANEL_SAKLAR_SECRET belum dipasang');
+  const enc = new TextEncoder().encode(env.PANEL_SAKLAR_SECRET);
   return await crypto.subtle.importKey(
     'raw',
     enc,

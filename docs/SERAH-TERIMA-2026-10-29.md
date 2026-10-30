@@ -89,23 +89,26 @@ Rencana yang mengikat (`docs/KEPUTUSAN.md`, `docs/SAKLAR.md`):
 
 **Target akhir rencana ini:** panel saklar jadi, dan latihan saklar balik lulus di staging. Saklar produksi tetap di posisi `gas`. Yang menyalakannya Gabriel, serentak untuk ketiga rumah (`docs/SAKLAR.md`, "Target selesai migrasi").
 
-**Status 29 Okt malam** (audit; rinciannya di `docs/PROGRES.md`):
+**Status 30 Okt sore** (audit; rinciannya di `docs/PROGRES.md` dan `docs/BUG-DICATAT.md` #24–#28):
 
 | Langkah | Status |
 |---|---|
-| 0 | **Sebagian.** Raka memegang token uji KMB Project dari Gabriel. Yang belum: akun layanan Google (panduan: `docs/PANDUAN-SERVICE-ACCOUNT-GOOGLE.md`), project staging (menunggu keputusan project SUM), dan token SPV-001 baru di sheet KMB Project. |
-| 1 | **Selesai**, diverifikasi live. Sisa kecil: hapus Worker `project-kmb`. |
-| 2 | **Persiapan.** Skema dan alat sinkron ketiga rumah ada di repo; belum ada sinkron. Syarat tambahan sebelum sinkron pertama: bug #22. |
-| 3, 4, 5, 7, 8, 9 | Belum mulai. |
-| 6 | Template web GAS disalin (SUM, KMB Project), belum disambung. KMB TRA belum. |
+| 0 | **Sebagian.**<br>• Sudah ada: akun layanan Google yang bisa membaca ketiga spreadsheet (uji kering), dan Gedung 2 staging (`dnnqrslftndcbmnvuveb`).<br>• Belum: token SPV-001 baru KMB Project, dan reset kata sandi database staging (pernah tertulis di percakapan). |
+| 1 | **Selesai.** Sisa kecil: hapus Worker `project-kmb`. |
+| 2 | **Sedang.**<br>• Bug #22 beres, diverifikasi live di kedua gedung.<br>• Skema `sum`, `kmb`, dan `kmb_projek` ada di Gedung 1 dan Gedung 2.<br>• Sinkron ke staging baru sebagian; ke Gedung 1 belum. |
+| 3, 5, 7, 9 | Belum mulai. |
+| 4 | **Sebagian.** Worker staging dan GAS tiruan ada di `*.workers.dev`; domain staging belum ada (#28). |
+| 6 | **Belum selesai** (#24, #25). Halaman sudah ada, tapi tampil tanpa data dan tombolnya tidak jalan. "Web" di pintu dikembalikan ke GAS di repo (berlaku setelah pintu di-deploy). |
+| 8 | **Sebagian.**<br>• Panel ada di `abadiops.com/saklar`, dan semua saklar `gas`.<br>• Saklar belum mengatur jalur (#27).<br>• Kata sandi cadangan dibuang di repo (#26).<br>• Latihan saklar balik belum bisa dijalankan (#28). |
 
-**Pagi 30 Okt, sebelum langkah lain** (kalau Gabriel belum melakukannya malam ini):
-1. Deploy ketiga Worker rumah, supaya perbaikan bug #19–#21 tayang: `cd workers/sum; npx wrangler deploy`, lalu hal yang sama di `workers/kmb` dan `workers/kmbprojek`.
-2. Cek: baris pertama `sw.js` yang tayang berisi `mar-sum-v49`, `mar-v95`, dan `mar-projek-v17` (misalnya `curl -s https://sum.abadiops.com/sw.js | head -1`).
-3. Uji tangan di satu HP per rumah:
-   - masuk dari pintu;
-   - tutup aplikasi, lalu buka lagi dari ikon: harus langsung dashboard;
-   - logout: layar login harus terlihat.
+✅ Pagi 30 Okt: ketiga Worker rumah di-deploy. File PWA yang tayang sama dengan repo (`mar-sum-v49`, `mar-v95`, `mar-projek-v17`), jadi perbaikan #19–#21 sudah berlaku.
+
+**Sore 30 Okt, sebelum langkah lain:**
+1. Deploy pintu, supaya #24 (sementara) dan #26 berlaku: `cd workers/pintu; npx wrangler deploy`.
+2. Cek: masuk dari pintu dengan token supervisor, lalu pilih Web. Harus terbuka halaman web GAS dengan daftar approval yang terisi.
+3. Gabriel:
+   - buka riwayat panel saklar produksi, dan pastikan tidak ada perubahan antara 14:22 dan 17:17 yang bukan dari Raka;
+   - reset kata sandi database staging.
 
 **0. Persiapan pagi.**
 - Gabriel menyerahkan langsung, tidak lewat repo:
@@ -129,9 +132,9 @@ Rencana yang mengikat (`docs/KEPUTUSAN.md`, `docs/SAKLAR.md`):
 - Laporan selisih harian.
 - Cermin `kmb_projek` yang sekarang (#12, #15) diselaraskan dengan cermin ini atau diganti.
 - **Sebelum sinkron pertama:**
-  - tutup bug #22 (RPC wajib token; `work_conditions` dari cermin);
-  - jalankan `db/kmb/*.sql` di project utama;
-  - untuk SUM, tunggu keputusan project Supabase (`docs/KEPUTUSAN.md`, "Belum diputuskan").
+  - ✅ tutup bug #22 (RPC wajib token; `work_conditions` 1:1 dengan GAS), 30 Okt;
+  - ✅ jalankan `db/kmb/*.sql` di project utama, 30 Okt;
+  - ✅ SUM: skema `sum` di project utama (Gedung 1), 30 Okt.
 - *Selesai kalau:* sinkron berjalan terjadwal di ketiga rumah dan laporan selisih hari pertama nol. **Lulus** setelah 7 hari berturut-turut nol. Selama menunggu, lanjutkan ke langkah berikutnya.
 
 **3. Cadangan per jam dan uji pulih.**
@@ -153,6 +156,9 @@ Rencana yang mengikat (`docs/KEPUTUSAN.md`, `docs/SAKLAR.md`):
 **6. Halaman web 1:1 per rumah**, di aplikasi rumah masing-masing: SUM 7 halaman, KMB TRA, dan KMB Project.
 - Layar, field, dan pesannya identik dengan web GAS. Pilihan "Web" di pintu lalu diarahkan ke halaman ini, bukan ke `script.google.com`.
 - *Selesai kalau:* setiap halaman lulus perbandingan berdampingan dengan web GAS, dan "Web" di pintu tidak lagi keluar dari `abadiops.com`.
+- Perbandingan berdampingan memakai token yang sama di kedua sisi. Yang dibandingkan: isi daftar (jumlah dan baris), setiap tombol (baca dan tulis), dan pesan galat. HTTP 200 dan HTML valid **bukan** bukti (#24).
+- Template disalin dari `clasp clone` GAS rumah itu sendiri, dan dicek byte demi byte (#25).
+- Arahkan "Web" di pintu ke halaman baru **setelah** perbandingan lulus, bukan sebelumnya.
 
 **7. Jalur tulis WO baru di belakang saklar.**
 - WO baru lahir di Supabase, dengan:
@@ -185,7 +191,7 @@ Bangun dan uji di staging dulu, lalu pasang di produksi **dengan semua rumah di 
 - **Bug #17, sisa:** angka "semua WO sepanjang waktu" 1:1 dengan web GAS. Ikut dikerjakan di langkah 6 (halaman web), dengan data dari cermin.
 - ✅ `scripts/verify-sum-kmb-isolation.mjs` dipensiunkan, `name` di `wrangler.toml` akar menjadi `project-mar`, dan `.github/workflows/pantau.yml` dimatikan (29 Okt, Raka).
 - **Worker `project-kmb`** tidak dipakai. Hapus (langkah 1 sudah selesai).
-- **Bug #23, CI merah sejak 27 Okt:** samakan `tests/navbar.test.tsx` dengan kode, lalu pastikan CI hijau. Selama CI merah, kegagalan baru tidak terlihat.
+- ✅ **Bug #23, CI merah sejak 27 Okt:** CI hijau sejak `20fabc9` (30 Okt, Raka).
 - **Koreksi catatan token uji L1/L2** (`docs/PROGRES.md` 29 Okt): cek ulang dengan `node scripts/buat-token-tiga-rumah.mjs --cek <token>`, lalu tulis awalan yang benar (4 karakter).
 - **Pengecekan token kembar harian:** pakai daftar token dari cermin (langkah 2) untuk ketiga rumah, lalu kirim peringatan kalau ada yang kembar.
 

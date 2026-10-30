@@ -56,6 +56,7 @@ Keputusan bisnis dan angka uang ada di tangan **Gabriel**.
 | 29 Okt 2026 | **Payroll selama dua cabang**: gabungan WO lama dari cermin dan WO baru dari Supabase. Sebelum go-live, payroll ini diuji sama dengan GAS untuk bulan-bulan lalu. | Uang tidak boleh berubah karena migrasi. |
 | 29 Okt 2026 | **Go-live serentak** di ketiga rumah (keputusan Gabriel), setelah semua syarat di `docs/SAKLAR.md` terpenuhi di ketiganya. Panel tetap per rumah, sehingga penyelamatan bisa dilakukan per rumah. | Satu momen peralihan untuk semua. |
 | 30 Okt 2026 | **Kamar SUM disatukan di Gedung 1 Produksi (`sptgqsjgszwbreikxdph`)**: Skema `sum` (22 tabel) dan RPC baca (bebas Bug #22) terpasang di project utama bersama `kmb` dan `kmb_projek`. Project `dnnqrslftndcbmnvuveb` dialokasikan untuk Gedung 2 (Staging). | Sesuai konsep Gedung & Kamar (docs/GEDUNG-DAN-STAGING.md), menghemat kuota gratis Supabase untuk panggung latihan. Dijalankan Raka 30 Okt pagi; isinya sama dengan usulan audit 29 Okt malam. Persetujuan Gabriel belum tercatat di repo. |
+| 30 Okt 2026 | **Raka tidak lagi memegang kode.** Semua kode, deploy, dan SQL di repo ini dikerjakan Gabriel (+ Claude). Target 31 Okt–1 Nov: semua yang bisa dibangun dan dilatih di staging selesai (`docs/SERAH-TERIMA-2026-10-29.md` §5). | Keputusan Gabriel. AI lain tidak push ke repo ini tanpa Gabriel. |
 
 ## Tahapan per rumah
 
